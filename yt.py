@@ -13,49 +13,56 @@ load_dotenv()
 api_key = os.getenv("API_KEY")
 playlistArray = []
 
-print(api_key)
+youtube = build('youtube', 'v3', developerKey=api_key)
 
-def get_releases_tab_videos():
-    youtube = build('youtube', 'v3', developerKey=api_key)
+nextPageToken = None
+while True:
+    pl_request = youtube.playlistItems().list(
+        part='contentDetails',
+        playlistId='PLat0VcCHprJb1O8CpOBmdvhhNeLwXNqgZ',
+        maxResults=50,
+        pageToken=nextPageToken
+    )
 
-    video_ids = []
-    next_page_token = None
+    pl_response =pl_request.execute()
 
-    print("Searching for all music releases...")
+    vid_ids = []
 
-    while True:
-        # We use search.list to find all 'video' types for this channel
-        # We filter by videoCategoryId='10' (Music) to target the songs
-        search_request = youtube.search().list(
-            part='snippet',
-            channelId='UCQ1ctrffvMbPct8cPOJL6xQ',
-            type='video',
-            videoCategoryId='10', # 10 is the ID for Music
-            maxResults=50,
-            pageToken=next_page_token,
-            order='date' # Gets newest releases first
-        ).execute()
+    for item in pl_response['items']:
+        vid_ids.append(item['contentDetails']['videoId'])
+        #print(vid_ids)
+        #print()
 
-        for item in search_request.get('items', []):
-            video_ids.append(item['id']['videoId'])
+    vid_request = youtube.videos().list(
+        part='contentDetails',
+        id=','.join(vid_ids)
+    )
 
-        next_page_token = search_request.get('nextPageToken')
-        
-        # Stop if there are no more pages
-        if not next_page_token:
-            break
+    vid_response = vid_request.execute()
+
+    for item in vid_response['items']:
+        duration = item['contentDetails']['duration']
+        print(duration)
+        print()
     
-    # write video IDs to the .json file in root
-    with open('./videos.json', 'w') as f:
-        json.dump(video_ids, f)
+    # the first time the while loop runs, it will have 50 entries in the vid_ids array. these vids can be assigned individually to the main 
+    # array, where they will be stored until all pages are eventually completed (e.g. a playlist has 102 entries. The loop will run 3 times 
+    # because there is a max of 50 video entries per page, and the playlistArray will need updating 3 times overall).
+    for vid in vid_ids:
+        playlistArray.append(vid)
 
-    return video_ids
+    nextPageToken = pl_response.get('nextPageToken')
+    if not nextPageToken:
+        break
 
-# Run the script
-all_songs = get_releases_tab_videos()
-print(f"\nFound {len(all_songs)} songs from the music/releases category.")
-print(all_songs)
-    
+
+# write video IDs to the .json file in root
+with open('./videos.json', 'w') as f:
+    json.dump(playlistArray, f)
+
+print(len(playlistArray))
+
+
 
 
 

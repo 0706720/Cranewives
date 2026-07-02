@@ -16,8 +16,10 @@
     <body onload="startUp()">
         <div id="navbar" class="navbar">
             <span class="spaced">Home</span>
-            <span class="spaced">Randomise All</span>
-            <span class="spaced">Choose an Album</span>
+            <button class="spaced" id="random" onclick="randomShuffle()">Randomise All</button>
+            <button class="spaced" id="original" onclick="originalShuffle()">Original Order</button>
+            <button class="spaced" id="next" onclick="next()">Next</button>
+            <button class="spaced" id="previous" onclick="previous()">Previous</button>
         </div>
         <p id="div1">placeholder</p>
         <p id="div2">placeholder2</p>

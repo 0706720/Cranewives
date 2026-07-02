@@ -1,4 +1,5 @@
-let globalIndex = 0;
+let globalIndex = -1;
+let currentArray = 'original';
 
 let originalOrder = [];
 let randomOrder = [];
@@ -110,8 +111,39 @@ function stopVideo()
 function incrementIndex()
 {
     globalIndex++;
-    player.loadVideoById(videoId = originalOrder[globalIndex], startSeconds = 0);
+    if(currentArray == 'original') {
+        player.loadVideoById(videoId = originalOrder[globalIndex], startSeconds = 0);
+    } else {
+        player.loadVideoById(videoId = randomOrder[globalIndex], startSeconds = 0);
+    }
 }
 
+function next()
+{
+    incrementIndex();
+}
 
+function previous()
+{
+    if (globalIndex >= -1) {
+        globalIndex -= 2;
+    } else {
+        globalIndex = -1;
+    }
+    incrementIndex();
+}
 
+function originalShuffle()
+{
+    globalIndex = -1;
+    currentArray = 'original';
+    incrementIndex();
+}
+
+function randomShuffle()
+{
+    globalIndex = -1;
+    currentArray = 'random';
+    shuffle();
+    incrementIndex();
+}
