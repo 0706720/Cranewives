@@ -8,11 +8,14 @@ async function startUp()
 {
     await init();
     shuffle(); 
+    // The 'onYouTubeIframeAPIReady()' func does not seem to be able to take parameters as part of the 'videoid' key value upon first 
+    // intialization. Therefore, the chosen solution is just to edit that videoid 0.1 seconds after the page loads. Laughs in spaghetti code.
+    setTimeout(originalShuffle, 100);
 }
 
 async function init()
 {
-    const response = await fetch('./videos.json');
+    const response = await fetch('../videos.json');
     originalOrder = await response.json();
 }
 
@@ -73,7 +76,7 @@ function onYouTubeIframeAPIReady()
     player = new YT.Player('player', {
     height: '390',
     width: '640',
-    videoId: 'tPEE9ZwTmy0',
+    videoId: 'CwwFQj_dQso',
     playerVars: {
         'playsinline': 1
         },
