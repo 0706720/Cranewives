@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]>      <html class="no-js"> <!--<![endif]-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>To-Do App</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body onload="startUp()">
+        <div class="navbar">
+            <button class="spaced customfont" id="Home" onclick="home()">Home</button>
+            <button class="spaced customfont" id="Albums" onclick="albums()">Albums</button>
+            <button class="spaced customfont" id="All Songs" onclick="allsongs()">All Songs</button>
+            <button class="spaced customfont" id="Search" onclick="search()">Search</button>
+            <button class="spaced customfont" id="Favourites" onclick="favourites()">Favourites</button>
+            <button class="spaced customfont" id="Save" onclick="save()">Save</button>
+            <span class="spaced large">||</span>
+            <span id="hide">
+                <button class="spaced customfont" id="random" onclick="randomShuffle()">Randomise</button>
+                <button class="spaced customfont" id="original" onclick="originalShuffle()">Start</button>
+                <button class="spaced customfont" id="next" onclick="next()">Next</button>
+                <button class="spaced customfont" id="previous" onclick="previous()">Previous</button>
+            </span>
+        </div>
+    </body>
+
