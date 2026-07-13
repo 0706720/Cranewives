@@ -46,3 +46,9 @@ button:hover
     font-style: italic;
 }
 
+.notapplicable
+{
+    cursor: not-allowed;
+    background-color: gray;
+}
+
