@@ -2,11 +2,13 @@ let globalIndex = -1;
 let currentArray = 'original';
 
 let originalOrder = [];
+let originalDict;
 let randomOrder = [];
+let singlesArray = [];
 
 async function startUp()
 {
-    setVideoButtonDisplay();
+    await setVideoButtonDisplay();
     await init();
     shuffle(); 
     // The 'onYouTubeIframeAPIReady()' func does not seem to be able to take parameters as part of the 'videoid' key value upon first 
@@ -14,7 +16,7 @@ async function startUp()
     setTimeout(originalShuffle, 100);
 }
 
-function setVideoButtonDisplay()
+async function setVideoButtonDisplay()
 {
     // if the funtion for originalShuffle exists in this script, then the video option buttons will be relevant.
     // therefore, the 'finally' block will run to change each button to appear usuable.
@@ -42,8 +44,37 @@ function changeButtons()
 
 async function init()
 {
-    const response = await fetch('../videos.json');
-    originalOrder = await response.json();
+    const response = await fetch('../albums.json');
+    originalDict = await response.json();
+    const response2 = await fetch('../singles.json');
+    singlesArray = await response2.json();
+    // this will compare the albums dict to the singles dict, and eliminate duplicates that appear in the singles section to avoid error.
+    // this is a necessity due to the garbage singles search by ytmusicapi on the crane wives.
+    checkDuplicates(originalDict, singlesArray);
+    createAlbums(originalDict);
+}
+
+function checkDuplicates(mainarray, secondarray)
+{
+    // the premise of this function is that if a video id is present in the mainarray, it should be fully removed from the secondarray if it 
+    // is also present there. mainarray should be an array with each index having a dictionary with keys 'album' and 'id', whilst secondarray
+    // is a regular array with single string video ids at each index.
+    for (let i = 0; i < mainarray.length; i++) {
+        let videoid = mainarray[i].id;
+
+        while (secondarray.includes(videoid)) {
+            let pos = secondarray.indexOf(videoid);
+            secondarray.splice(pos, 1);
+        }
+    }
+    document.getElementById('div2').innerHTML = JSON.stringify(secondarray);
+}
+
+function createAlbums(dict)
+{
+    for (let i = 0; i < dict.length; i++) {
+        originalOrder.push(dict[i].id);
+    }
 }
 
 function shuffle()

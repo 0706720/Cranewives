@@ -4,39 +4,48 @@ from googleapiclient.discovery import build
 from dotenv import load_dotenv
 # this module allows python to access external files (.env)
 import os
+
+from ytmusicapi import YTMusic
 # the data interchange format to communicate with javascript
 import json
-import requests
-import re
 
+ytmusic = YTMusic()
 
 # Loads variables from .env
 load_dotenv()  
 
-api_key = os.getenv("API_KEY")
 playlistArray = []
+videoItems = []
 
-url = "https://www.youtube.com/@thecranewives/releases"
+#browseArray = ['MPREb_ARlR8h0EIdL', 'MPREb_tLns0Q1MnPh', 'MPREb_19AKYQEfSHP', 'MPREb_1BHpLSz743D', 'MPREb_HGwAhma5gSs', 'MPREb_Yp0371DVot9', 'MPREb_qryiUfEzBni', 'MPREb_JgEtzmGEMki', 'MPREb_NHLMzSOh8Gt', 'MPREb_hKF5U5t6Rsn']
+singlesparam = 'ggMCCAI%3D'
+singlesid = 'MPADUCoPTtb6E_Z6J7gVa6E8Z_Jw'
 
-headers = {
-    "User-Agent": (
-        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
-        "AppleWebKit/537.36 Chrome/137.0 Safari/537.36"
-    )
-}
+query = ytmusic.get_artist_albums(
+    channelId=singlesid,
+    params=singlesparam
+)
 
-html = requests.get(url, headers=headers).text
+for playlist in query:
+    playlistArray.append(playlist['playlistId'])
 
-match = re.search(r'var ytInitialData = ', html)
+for playlist_id in playlistArray:
+    query2 = ytmusic.get_playlist(
+            playlistId = playlist_id
+        )
 
-decoder = json.JSONDecoder()
-yt_data, _ = decoder.raw_decode(html[match.end():])
-with open("./releases.json", "w", encoding="utf-8") as f:
-    json.dump(yt_data, f, indent=2)
+    # the video id property after running the get_playlist request is underneath tracks -> videoId. Then, the videItems playlist will
+    # populate with all video IDs present in the current playlist
+    for entry in query2['tracks']:
+        videoItems.append(entry['videoId'])
 
-def find_releases(jsondata)
-       if "playlistId" in obj:
+print(videoItems)
 
-find_releases(yt_data)
+# write video IDs to the .json file in root
+with open('./singles.json', 'w') as f:
+    json.dump(videoItems, f)
+
+
+
 
 
