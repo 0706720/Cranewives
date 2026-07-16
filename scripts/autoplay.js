@@ -50,24 +50,7 @@ async function init()
     singlesArray = await response2.json();
     // this will compare the albums dict to the singles dict, and eliminate duplicates that appear in the singles section to avoid error.
     // this is a necessity due to the garbage singles search by ytmusicapi on the crane wives.
-    checkDuplicates(originalDict, singlesArray);
     createAlbums(originalDict);
-}
-
-function checkDuplicates(mainarray, secondarray)
-{
-    // the premise of this function is that if a video id is present in the mainarray, it should be fully removed from the secondarray if it 
-    // is also present there. mainarray should be an array with each index having a dictionary with keys 'album' and 'id', whilst secondarray
-    // is a regular array with single string video ids at each index.
-    for (let i = 0; i < mainarray.length; i++) {
-        let videoid = mainarray[i].id;
-
-        while (secondarray.includes(videoid)) {
-            let pos = secondarray.indexOf(videoid);
-            secondarray.splice(pos, 1);
-        }
-    }
-    document.getElementById('div2').innerHTML = JSON.stringify(secondarray);
 }
 
 function createAlbums(dict)
