@@ -4,7 +4,7 @@ let currentArray = 'original';
 let originalOrder = [];
 let originalDict;
 let randomOrder = [];
-let singlesArray = [];
+let singlesDict;
 
 async function startUp()
 {
@@ -44,19 +44,22 @@ function changeButtons()
 
 async function init()
 {
-    const response = await fetch('../albums.json');
+    const response = await fetch('../json/albums.json');
     originalDict = await response.json();
-    const response2 = await fetch('../singles.json');
-    singlesArray = await response2.json();
+    const response2 = await fetch('../json/singles.json');
+    singlesDict = await response2.json();
     // this will compare the albums dict to the singles dict, and eliminate duplicates that appear in the singles section to avoid error.
     // this is a necessity due to the garbage singles search by ytmusicapi on the crane wives.
-    createAlbums(originalDict);
+    createAlbums(originalDict, singlesDict);
 }
 
-function createAlbums(dict)
+function createAlbums(dict, dict2)
 {
     for (let i = 0; i < dict.length; i++) {
         originalOrder.push(dict[i].id);
+    }
+    for (let i = 0; i < dict2.length; i++) {
+        originalOrder.push(dict2[i].id);
     }
 }
 
