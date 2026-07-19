@@ -52,3 +52,19 @@ button:hover
     background-color: gray;
 }
 
+.float-child-left 
+{
+    width: 49%;
+    float: left;
+    border: 2px dashed black;
+    margin-top: 10px;
+}  
+
+.float-child-right
+{
+    width: 49%;
+    float: right;
+    border: 2px dashed black;
+    margin-top: 10px;
+}  
+

@@ -50,17 +50,39 @@ async function init()
     singlesDict = await response2.json();
     // this will compare the albums dict to the singles dict, and eliminate duplicates that appear in the singles section to avoid error.
     // this is a necessity due to the garbage singles search by ytmusicapi on the crane wives.
-    createAlbums(originalDict, singlesDict);
+    let groupedAlbums = createAlbums(originalDict, singlesDict);
+    document.getElementById('div2').innerHTML = JSON.stringify(groupedAlbums['Foxlore']);
 }
 
-function createAlbums(dict, dict2)
+function createAlbums(albums, singles)
 {
-    for (let i = 0; i < dict.length; i++) {
-        originalOrder.push(dict[i].id);
+    for (let i = 0; i < albums.length; i++) {
+        originalOrder.push(albums[i].id);
     }
-    for (let i = 0; i < dict2.length; i++) {
-        originalOrder.push(dict2[i].id);
+    for (let i = 0; i < singles.length; i++) {
+        originalOrder.push(albums[i].id);
     }
+
+    // this section will group albums. this first line is const because the albums will never change whilst in javascript, they are only
+    // ever modified in python.
+    const groupedAlbums = {};
+
+    // https://www.w3schools.com/js/js_object_intro.asp
+    // similar to python syntax, where 'song' represents each index of 'albums', which is the json data provided by python scripts. albums
+    // will represent a array of individual objects, noted by {}.
+    for (const song of albums) {
+        // this line reads as: if a property equal to the string of an album name DOESN'T exist inside of the 'groupedAlbums' dict, then
+        // this evals true.
+        if (!groupedAlbums[song.album]) {
+            // if the previous line evaluated true, this will create a new property for 'groupedAlbums' such as ('Foxlore'), etc. This means
+            // for as long as new indexes have the exact same album property value, all new songs will be under the same object.
+            groupedAlbums[song.album] = [];
+        }
+        // this line adds an array element to a specific property based on album name read.
+        groupedAlbums[song.album].push(song);
+    }
+    // value is returned back to function init() in order to reduce global variable usage and namespace pollution.
+    return groupedAlbums;
 }
 
 function shuffle()
