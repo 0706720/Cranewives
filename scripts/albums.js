@@ -113,7 +113,7 @@ function playAlbum(albumString, songList)
     // particular object property of songList, populate originalOrder with only the ids. It works similar to a loop. For example: 
     // songList['Foxlore'].map({"album":"Foxlore","id":"56rtvwq3qvA","name":"Nothing at All"} => "56rtvwq3qvA");
     originalOrder = songList[albumString].map(song => song.id);
-    //document.getElementById('videodiv').innerHTML = JSON.stringify(originalOrder);
+    // for a seamless transition, refresh the video player with new vids
     originalShuffle();
 }
 
