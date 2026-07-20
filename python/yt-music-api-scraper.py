@@ -4,26 +4,24 @@ import json
 
 ytmusic = YTMusic()
 
-playlistItems = []
-videoItems = []
-songNameItems = []
-albumTitles = []
 videoDict = []
-
-singleSongNames = []
-singleItems = []
-singleSongNames2 = []
-singleItems2 = []
-
-
 singleDict = []
 
-# index 0 is LEE EMI, index 1 is The Crane Wives.
-staticChannelsList = ['UClzs1UE_hLclY-Ln74FO7ZA', 'UCQ1ctrffvMbPct8cPOJL6xQ']
+# index 0 is LEE EMI, index 1 is The Crane Wives, index 2 is the family crest.
+staticChannelsList = ['UClzs1UE_hLclY-Ln74FO7ZA', 'UCQ1ctrffvMbPct8cPOJL6xQ', 'UCJpEPBciatVm11ePw_vyMAA']
 
 # this line should mean, after passing the 'channel' parameter for the 'channelId' field in 'artistQuery', all channels desired are scraped
 # in sequence and then all mashed into the same json file.
 for channel in staticChannelsList:
+    playlistItems = []
+    videoItems = []
+    songNameItems = []
+    albumTitles = []
+
+    singleItems = []
+    singleSongNames = []
+    singleItems2 = []
+    singleSongNames2 = []
 
     # this line will get many details about the artist found (the crane wives is the given channel ID).
     artistQuery = ytmusic.get_artist(channelId = channel)

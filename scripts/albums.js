@@ -113,7 +113,7 @@ function playAlbum(albumString, songList)
     // particular object property of songList, populate originalOrder with only the ids. It works similar to a loop. For example: 
     // songList['Foxlore'].map({"album":"Foxlore","id":"56rtvwq3qvA","name":"Nothing at All"} => "56rtvwq3qvA");
     originalOrder = songList[albumString].map(song => song.id);
-    //document.getElementById('videodiv').innerHTML = JSON.stringify(originalOrder);
+    // for a seamless transition, refresh the video player with new vids
     originalShuffle();
 }
 
@@ -205,4 +205,23 @@ function randomShuffle()
     currentArray = 'random';
     shuffle();
     incrementIndex();
+}
+
+function shuffle()
+{
+    randomOrder = [...originalOrder];
+    //   set the index to the arrays length
+    let i = randomOrder.length, j, temp;
+    //   create a loop that subtracts everytime it iterates through
+    while (--i > 0) {
+    //  create a random number and store it in a variable
+    j = Math.floor(Math.random () * (i+1));
+    // create a temporary position from the item of the random number    
+    temp = randomOrder[j];
+    // swap the temp with the position of the last item in the array    
+    randomOrder[j] = randomOrder[i];
+    // swap the last item with the position of the random number 
+    randomOrder[i] = temp;
+    } 
+    
 }
