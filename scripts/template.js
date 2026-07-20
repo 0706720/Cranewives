@@ -32,30 +32,30 @@ includeHTML();
 // the below functions provide HTML naviagtion from the topbar. This is because the <a> element and CSS were hating each other.
 function home()
 {
-  window.location.replace('./test.html');
+  window.location.replace('test.html');
 }
 
 function albums()
 {
-  window.location.replace('/pages/albums.html');
+  window.location.replace('pages/albums.html');
 }
 
 function allsongs()
 {
-  window.location.replace('/pages/allsongs.html');
+  window.location.replace('pages/allsongs.html');
 }
 
 function search()
 {
-  window.location.replace('/pages/search.html');
+  window.location.replace('pages/search.html');
 }
 
 function favourites()
 {
-  window.location.replace('/pages/favourites.html');
+  window.location.replace('pages/favourites.html');
 }
 
 function save()
 {
-  window.location.replace('/pages/save.html');
+  window.location.replace('pages/save.html');
 }
