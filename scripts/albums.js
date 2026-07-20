@@ -206,3 +206,22 @@ function randomShuffle()
     shuffle();
     incrementIndex();
 }
+
+function shuffle()
+{
+    randomOrder = [...originalOrder];
+    //   set the index to the arrays length
+    let i = randomOrder.length, j, temp;
+    //   create a loop that subtracts everytime it iterates through
+    while (--i > 0) {
+    //  create a random number and store it in a variable
+    j = Math.floor(Math.random () * (i+1));
+    // create a temporary position from the item of the random number    
+    temp = randomOrder[j];
+    // swap the temp with the position of the last item in the array    
+    randomOrder[j] = randomOrder[i];
+    // swap the last item with the position of the random number 
+    randomOrder[i] = temp;
+    } 
+    
+}
