@@ -10,6 +10,10 @@ singleDict = []
 # index 0 is LEE EMI, index 1 is The Crane Wives, index 2 is the family crest.
 staticChannelsList = ['UClzs1UE_hLclY-Ln74FO7ZA', 'UCQ1ctrffvMbPct8cPOJL6xQ', 'UCJpEPBciatVm11ePw_vyMAA']
 
+# this will hold playlists/albums that will need to be seeked out. For example, the show hazbin hotel does not have a artist, rather a topic 
+# channel from the episode snippets. 
+staticPlaylistIds = ['PLV1K5mJMKoig']
+
 # this line should mean, after passing the 'channel' parameter for the 'channelId' field in 'artistQuery', all channels desired are scraped
 # in sequence and then all mashed into the same json file.
 for channel in staticChannelsList:
@@ -112,6 +116,23 @@ for channel in staticChannelsList:
     else:
         print("The key " + key + " is not present in the dictionary, therefore no singles are assumed for this channel.")
 
+
+def staticPlaylists():
+    for playlist_id in staticPlaylistIds:
+        query2 = ytmusic.get_playlist(
+            playlistId = playlist_id
+        )
+
+        albumTitle = query2['title']
+                
+        # the video id property after running the get_playlist request is underneath tracks -> videoId. Then, the videItems playlist will
+        # populate with all video IDs present in the current playlist.
+        for entry in query2['tracks']:
+            # the 'zip' function essentially allows two arrays to be used in one for loop, by assigning each loop iteration to the same
+            # index in two arrays at once.    
+            videoDict.append({'album': albumTitle, 'id': entry['videoId'], 'name': entry['title']})
+
+staticPlaylists()
 # the premise of this code is that if a video id is present in the mainarray (albums), it should be fully removed from the secondarray (singles) if it 
 # is also present there. mainarray should be an array with each index having a dictionary with keys 'album' and 'id', whilst secondarray
 # is a regular array with single string video ids at each index.
