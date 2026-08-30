@@ -68,3 +68,17 @@ button:hover
     margin-top: 10px;
 }  
 
+.topOfDiv 
+{
+    vertical-align: top;
+}
+
+.hidden
+{
+    display: none;
+}
+
+.visibleBlock
+{
+    display: block;
+}

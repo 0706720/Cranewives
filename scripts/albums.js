@@ -88,21 +88,67 @@ function createAlbumPageElements(songList)
 
     let keyExtract = Object.keys(songList);
     for (let property of keyExtract) {
+        let index = keyExtract.indexOf(property);
+        let divElement = document.createElement('div');
+
         pageLocation.appendChild(document.createElement('br'));
         let buttonElement = document.createElement('button');
         buttonElement.textContent = property;
-        pageLocation.appendChild(buttonElement);
+        divElement.appendChild(buttonElement);        
+        
+        // create button alongside album name that will act as a dropdown menu for song lists
+        let dropdownElement = document.createElement('img');
+        dropdownElement.id = 'dropdown' + index.toString();
+        dropdownElement.src = "../images/dropdownclosed.png";
+        // this classlist addition helps because otherwise the leftmost button pushes the rightmost button downward when the text is longer
+        let list = dropdownElement.classList;
+        list.add("topOfDiv");
+        // the intended logic is to run the function to hide the div containing the song list for a particular album
+        dropdownElement.onclick = function() {
+            hideAlbum(index.toString());
+        };
+        divElement.appendChild(dropdownElement);
+
+        pageLocation.appendChild(divElement);
         buttonElement.onclick = function() {
             playAlbum(property, songList);
         };
         pageLocation.appendChild(document.createElement('br'));
+        let containerDivElement = document.createElement('div');
         for (let song of songList[property]) {
-            let albumElement = document.createElement('span');
-            //albumElement.id = songList[]
-            albumElement.textContent = song.name + ', ';
-            pageLocation.appendChild(albumElement);
+            let albumElement = document.createElement('p');
+            albumElement.textContent = song.name;
+            containerDivElement.appendChild(albumElement);
         }
+        containerDivElement.id = 'songs' + index.toString();
+        containerDivElement.style.display = 'none';
+        pageLocation.appendChild(containerDivElement);
     }
+}
+
+function hideAlbum(albumDivId)
+{
+    flipIcon('dropdown' + albumDivId);
+    let element = document.getElementById('songs' + albumDivId);
+    // either hide or show song list if it is currently hidden or not
+    if (element.style.display !== 'none') {
+        element.style.display = 'none';
+    } else {
+        element.style.display = 'block';
+    }
+}
+
+function flipIcon(iconId)
+{
+    let element = document.getElementById(iconId);
+    if (element.src == '../images/dropdownclosed.png') {
+        element.src = '../images/dropdownopen.png';
+    } else {
+        element.src = '../images/dropdownclosed.png';
+    }
+    document.getElementById('hello').innerHTML += 'flip icon func ran, param of: ' + iconId;
+    document.getElementById('hello').innerHTML +=  lastIndexOf(element.src);
+        
 }
 
 function playAlbum(albumString, songList)
