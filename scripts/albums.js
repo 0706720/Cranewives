@@ -87,6 +87,7 @@ function createAlbumPageElements(songList)
     const pageLocation = document.getElementById('albums');
 
     let keyExtract = Object.keys(songList);
+
     for (let property of keyExtract) {
         let index = keyExtract.indexOf(property);
         let divElement = document.createElement('div');
@@ -96,13 +97,13 @@ function createAlbumPageElements(songList)
         buttonElement.textContent = property;
         divElement.appendChild(buttonElement);        
         
-        // create button alongside album name that will act as a dropdown menu for song lists
-        let dropdownElement = document.createElement('img');
+        // create button alongside album name that will act as a dropdown menu for song lists using '-' and '+' symbols
+        let dropdownElement = document.createElement('span');
         dropdownElement.id = 'dropdown' + index.toString();
-        dropdownElement.src = "../images/dropdownclosed.png";
+        dropdownElement.textContent = '+';
         // this classlist addition helps because otherwise the leftmost button pushes the rightmost button downward when the text is longer
         let list = dropdownElement.classList;
-        list.add("topOfDiv");
+        list.add("topOfDiv", "dropdown");
         // the intended logic is to run the function to hide the div containing the song list for a particular album
         dropdownElement.onclick = function() {
             hideAlbum(index.toString());
@@ -110,14 +111,22 @@ function createAlbumPageElements(songList)
         divElement.appendChild(dropdownElement);
 
         pageLocation.appendChild(divElement);
+        // the parameter of -1 will allow the function to ignore an extra parameter usually used for starting the song in a shifted position
         buttonElement.onclick = function() {
-            playAlbum(property, songList);
+            playAlbum(property, songList, -1);
         };
         pageLocation.appendChild(document.createElement('br'));
         let containerDivElement = document.createElement('div');
         for (let song of songList[property]) {
+            // below logic creates paragraph tags for each song to display on the GUI
             let albumElement = document.createElement('p');
             albumElement.textContent = song.name;
+            albumElement.classList.add("pointer");
+            // this onlick will play the album in the ytplayer iframe at the specified SONG index.
+            let paramIndex = songList[property].indexOf(song);
+            albumElement.onclick = function() {
+                playAlbum(property, songList, paramIndex);
+            };
             containerDivElement.appendChild(albumElement);
         }
         containerDivElement.id = 'songs' + index.toString();
@@ -141,17 +150,16 @@ function hideAlbum(albumDivId)
 function flipIcon(iconId)
 {
     let element = document.getElementById(iconId);
-    if (element.src == '../images/dropdownclosed.png') {
-        element.src = '../images/dropdownopen.png';
+    if (element.innerHTML == '+') {
+        element.innerHTML = '-';
     } else {
-        element.src = '../images/dropdownclosed.png';
+        element.innerHTML = '+';
     }
-    document.getElementById('hello').innerHTML += 'flip icon func ran, param of: ' + iconId;
-    document.getElementById('hello').innerHTML +=  lastIndexOf(element.src);
+    
         
 }
 
-function playAlbum(albumString, songList)
+function playAlbum(albumString, songList, optionalIndex)
 {
     // clear the main array so that choosing a new album will not include remnants of the previous one.
     originalOrder = [];
@@ -161,6 +169,15 @@ function playAlbum(albumString, songList)
     originalOrder = songList[albumString].map(song => song.id);
     // for a seamless transition, refresh the video player with new vids
     originalShuffle();
+
+    if(optionalIndex == -1) {
+        return;
+    } else {
+        document.getElementById('hello').innerHTML += 'playalbum ran with an index of: ' + optionalIndex;
+        // setting global index will allow shifted album starting points. -1 is required because 'incrementIndex()' increments globalIndex.
+        globalIndex = (optionalIndex -1);
+        incrementIndex();
+    }
 }
 
 // 2. This code loads the IFrame Player API code asynchronously.
