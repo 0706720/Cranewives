@@ -13,12 +13,20 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body onload="startUp()">
-        <div class="navbar">
+        <div class="navigationbar">
             <button class="spaced" id="Home" onclick="home()">Home</button>
             <button class="spaced" id="Albums" onclick="albums()">Albums</button>
             <button class="spaced" id="All Songs" onclick="allsongs()">All Songs</button>
             <button class="spaced" id="Search" onclick="search()">Search</button>
-            <button class="spaced" id="Favourites" onclick="favourites()">Favourites</button>
+            <span class="dropdown">
+                <button class="spaced dropbtn" id="Favourites" onclick="favourites()">Favourites
+                    <i class="fa fa-caret-down"></i>
+                </button>
+                <div class="dropdown-content">
+                    <p>Add song to favourites</p>
+                    <p>Remove song from favourites</p> 
+                </div>
+            </span>
             <button class="spaced" id="Save" onclick="save()">Save</button>
             <span class="spaced large">||</span>
             <span id="hide">

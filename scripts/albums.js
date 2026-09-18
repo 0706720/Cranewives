@@ -103,7 +103,7 @@ function createAlbumPageElements(songList)
         dropdownElement.textContent = '+';
         // this classlist addition helps because otherwise the leftmost button pushes the rightmost button downward when the text is longer
         let list = dropdownElement.classList;
-        list.add("topOfDiv", "dropdown");
+        list.add("topOfDiv", "dropdown2");
         // the intended logic is to run the function to hide the div containing the song list for a particular album
         dropdownElement.onclick = function() {
             hideAlbum(index.toString());
